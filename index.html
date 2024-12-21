@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Coming Soon</title>
+    <title>Coming Soon</title>
     <style>
         /* General Styles */
         body {
@@ -156,7 +156,29 @@
             animation-name: hourglass-rotation;
         }
 
-        /* Vibration Animation */
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem; /* Slightly smaller heading */
+            }
+
+            .countdown {
+                gap: 0.5rem; /* Reduce gap between boxes */
+            }
+
+            .countdown span {
+                width: 60px; /* Smaller width for mobile */
+                height: 60px; /* Smaller height for mobile */
+                font-size: 2rem; /* Smaller font size */
+                line-height: 60px;
+            }
+
+            .countdown label {
+                font-size: 0.6rem; /* Make labels very small for aesthetics */
+            }
+        }
+      
+      /* Vibration Animation */
         @keyframes vibrate {
             0% { transform: translate(3px, 3px) rotate(0deg); }
             10% { transform: translate(-3px, -3px) rotate(-2deg); }
@@ -170,6 +192,7 @@
             90% { transform: translate(3px, 3px) rotate(1deg); }
             100% { transform: translate(-3px, -3px) rotate(0deg); }
         }
+      
     </style>
 </head>
 <body>
@@ -220,9 +243,9 @@
             <label>Seconds</label>
         </div>
     </div>
-  <br>
     <button class="notify-btn" id="notify-btn">NOTIFY ME!</button>
-    <script>
+
+  <script>
         const targetDate = new Date("2025-01-31T00:00:00Z").getTime(); // Set your target date here
 
         function updateCountdown() {
