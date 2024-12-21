@@ -98,11 +98,15 @@
     </main>
 
     <script>
-        // Countdown Timer
-        const targetDate = new Date("April 1, 2024 00:00:00").getTime(); // Target date
+        console.log("Script Loaded!"); // Debugging message to confirm script runs
+
+        const targetDate = new Date("2024-04-01T00:00:00Z").getTime();
+
+        console.log("Target Date:", targetDate); // Debug the target date
 
         function updateCountdown() {
             const now = new Date().getTime();
+            console.log("Current Time:", now); // Debug the current time
             const difference = targetDate - now;
 
             if (difference > 0) {
@@ -111,6 +115,8 @@
                 const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
+                console.log(`Days: ${days}, Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`);
+
                 document.getElementById("days").innerText = days;
                 document.getElementById("hours").innerText = hours;
                 document.getElementById("minutes").innerText = minutes;
@@ -118,10 +124,10 @@
             } else {
                 clearInterval(timer);
                 document.querySelector(".countdown").innerText = "We're Live!";
+                console.log("Countdown Complete!"); // Debug when countdown ends
             }
         }
 
-        // Start the timer
         const timer = setInterval(updateCountdown, 1000);
         updateCountdown();
     </script>
