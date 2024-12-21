@@ -97,39 +97,42 @@
         </div>
     </main>
 
-    <script>
-        console.log("Script Loaded!"); // Debugging message to confirm script runs
+   <script>
+    console.log("Script Loaded!"); // Debugging message to confirm script runs
 
-        const targetDate = new Date("2024-04-01T00:00:00Z").getTime();
+    const targetDate = new Date("2024-04-01T00:00:00Z").getTime();
 
-        console.log("Target Date:", targetDate); // Debug the target date
+    console.log("Target Date:", targetDate); // Debug the target date
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            console.log("Current Time:", now); // Debug the current time
-            const difference = targetDate - now;
+    function updateCountdown() {
+        const now = Date.now(); // Use Date.now() to ensure accuracy
+        console.log("Current Time:", now); // Debug the current time
+        const difference = targetDate - now;
 
-            if (difference > 0) {
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        console.log("Time Difference:", difference); // Debug the calculated time difference
 
-                console.log(`Days: ${days}, Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`);
+        if (difference > 0) {
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-                document.getElementById("days").innerText = days;
-                document.getElementById("hours").innerText = hours;
-                document.getElementById("minutes").innerText = minutes;
-                document.getElementById("seconds").innerText = seconds;
-            } else {
-                clearInterval(timer);
-                document.querySelector(".countdown").innerText = "We're Live!";
-                console.log("Countdown Complete!"); // Debug when countdown ends
-            }
+            console.log(`Days: ${days}, Hours: ${hours}, Minutes: ${minutes}, Seconds: ${seconds}`);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+        } else {
+            clearInterval(timer);
+            document.querySelector(".countdown").innerText = "We're Live!";
+            console.log("Countdown Complete!"); // Debug when countdown ends
         }
+    }
 
-        const timer = setInterval(updateCountdown, 1000);
-        updateCountdown();
-    </script>
+    const timer = setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
+
 </body>
 </html>
