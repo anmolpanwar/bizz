@@ -34,6 +34,32 @@
             margin-bottom: 0.5rem;
             z-index: 1;
         }
+		/* --- theCATgpt button styles --- */
+		.trycatgpt-btn {
+		    display: inline-block;
+		    padding: 1rem 2rem;
+		    margin-top: 1rem;
+		    font-size: 1rem;
+		    color: #fff;
+		    background: linear-gradient(90deg, #00c6ff, #0072ff);
+		    border: none;
+		    border-radius: 50px;
+		    cursor: pointer;
+		    text-decoration: none;
+		    font-weight: bold;
+		    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+		    z-index: 1; /* sits above canvas */
+		    box-shadow: 0 0 15px rgba(0, 114, 255, 0.5);
+		}
+		.trycatgpt-btn:hover {
+		    transform: scale(1.1);
+		    box-shadow: 0 0 25px rgba(0, 114, 255, 0.7);
+		}
+		#click-count {
+		    margin-top: 0.5rem;
+		    font-size: 0.9rem;
+		    color: #bbb;
+		}
 
         p {
             font-size: 0.6rem;
@@ -317,6 +343,18 @@
             <label>Seconds</label>
         </div>
     </div>
+	<!-- theCATgpt CTA -->
+<a
+  href="https://chatgpt.com/g/g-68ea75b939508191ae4df46933a12b31-thecatgpt"
+  class="trycatgpt-btn"
+  id="trycatgpt-btn"
+  target="_blank"
+  rel="noopener"
+>
+  🚀 Try theCATgpt for your CAT preparation
+</a>
+<div id="click-count">Clicks: …</div>
+
     <!-- <button class="notify-btn" id="notify-btn">NOTIFY ME!</button> -->
   <script>
 
@@ -705,39 +743,80 @@ window.addEventListener('touchend', function (e) {
 
         // Vibrate button and disappear letters
         const notifyButton = document.getElementById("notify-btn");
-        notifyButton.addEventListener("click", () => {
-            // Add aggressive vibration effect
-            notifyButton.style.animation = "vibrate 0.2s linear infinite";
-            setTimeout(() => {
-                notifyButton.style.animation = ""; // Remove animation after vibration
+        if (notifyButton) {
+  notifyButton.addEventListener("click", () => {
+      // Add aggressive vibration effect
+      notifyButton.style.animation = "vibrate 0.2s linear infinite";
+      setTimeout(() => {
+          notifyButton.style.animation = ""; // Remove animation after vibration
+          setTimeout(() => {
+              let text = notifyButton.innerText;
+              let removeInterval = setInterval(() => {
+                  if (text.length > 2) {
+                      text = text.slice(0, -1);
+                      notifyButton.innerText = text;
+                  } else {
+                      clearInterval(removeInterval);
+                      let newText = "NOPE, WE WON'T";
+                      let i = 0;
+                      const addInterval = setInterval(() => {
+                          if (i < newText.length) {
+                              notifyButton.innerText = newText.slice(0, i + 1);
+                              i++;
+                          } else {
+                              clearInterval(addInterval);
+                          }
+                      }, 150);
+                  }
+              }, 150);
+          }, 400);
+      }, 500);
+  });
+}
+	  /* --- CounterAPI click tracking for theCATgpt button --- */
+const CATGPT_COUNTER_URL = "https://api.counterapi.dev/v2/applyo-test-landing/try-theCATgpt_clicks";
+const CATGPT_API_KEY   = "ut_GLA4CdXCvHWs3tgXi9vFkqNfeIRowLn0pKO6B5Jm"; // note: client-visible
 
-                // Delay text animation by 0.4 seconds
-                setTimeout(() => {
-                    // Remove letters one by one from the right
-                    let text = notifyButton.innerText;
-                    let removeInterval = setInterval(() => {
-                        if (text.length > 2) { // Stop when "NO" remains
-                            text = text.slice(0, -1);
-                            notifyButton.innerText = text;
-                        } else {
-                            clearInterval(removeInterval);
+// Increment the counter on click and update UI count
+const catgptBtn = document.getElementById("trycatgpt-btn");
+if (catgptBtn) {
+  catgptBtn.addEventListener("click", async () => {
+    try {
+      const r = await fetch(`${CATGPT_COUNTER_URL}/up`, {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${CATGPT_API_KEY}` }
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const el = document.getElementById("click-count");
+        if (el && typeof data.value !== "undefined") el.innerText = `Clicks: ${data.value}`;
+        console.log("CounterAPI ↑", data);
+      } else {
+        console.error("CounterAPI /up error:", r.status, await r.text());
+      }
+    } catch (e) {
+      console.error("CounterAPI /up failed:", e);
+    }
+  });
+}
 
-                            // Add "NOPE, WE WON'T" one letter at a time
-                            let newText = "NOPE, WE WON'T";
-                            let i = 0;
-                            const addInterval = setInterval(() => {
-                                if (i < newText.length) {
-                                    notifyButton.innerText = newText.slice(0, i + 1);
-                                    i++;
-                                } else {
-                                    clearInterval(addInterval);
-                                }
-                            }, 150); // Adjust typing speed
-                        }
-                    }, 150); // Adjust removal speed
-                }, 400); // 0.4-second delay
-            }, 500); // Allow vibration to complete
-        });
+// Fetch current count on page load
+(async function refreshClickCount() {
+  try {
+    const r = await fetch(CATGPT_COUNTER_URL, {
+      headers: { "Authorization": `Bearer ${CATGPT_API_KEY}` }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      const el = document.getElementById("click-count");
+      if (el && typeof data.value !== "undefined") el.innerText = `Clicks: ${data.value}`;
+      console.log("CounterAPI value", data);
+    }
+  } catch (e) {
+    console.warn("CounterAPI get value failed:", e);
+  }
+})();
+
     </script>
 </body>
 </html>
