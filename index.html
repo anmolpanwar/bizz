@@ -40,8 +40,8 @@
 		    padding: 1rem 2rem;
 		    margin-top: 1rem;
 		    font-size: 1rem;
-		    color: #fff;
-		    background: linear-gradient(90deg, #00c6ff, #0072ff);
+		    color: #dddddd;
+		    background: #222;
 		    border: none;
 		    border-radius: 50px;
 		    cursor: pointer;
@@ -49,11 +49,9 @@
 		    font-weight: bold;
 		    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
 		    z-index: 1; /* sits above canvas */
-		    box-shadow: 0 0 15px rgba(0, 114, 255, 0.5);
 		}
 		.trycatgpt-btn:hover {
-		    transform: scale(1.1);
-		    box-shadow: 0 0 25px rgba(0, 114, 255, 0.7);
+		    transform: scale(1.03);
 		}
 		#click-count {
 		    margin-top: 0.5rem;
@@ -353,7 +351,7 @@
 >
   🚀 Try theCATgpt for your CAT preparation
 </a>
-<div id="click-count">Clicks: …</div>
+<!-- <div id="click-count">Clicks: …</div> -->
 
     <!-- <button class="notify-btn" id="notify-btn">NOTIFY ME!</button> -->
   <script>
@@ -775,7 +773,6 @@ window.addEventListener('touchend', function (e) {
 }
 	  /* --- CounterAPI click tracking for theCATgpt button --- */
 const CATGPT_COUNTER_URL = "https://api.counterapi.dev/v2/applyo-test-landing/try-theCATgpt_clicks";
-const CATGPT_API_KEY   = "ut_GLA4CdXCvHWs3tgXi9vFkqNfeIRowLn0pKO6B5Jm"; // note: client-visible
 
 // Increment the counter on click and update UI count
 const catgptBtn = document.getElementById("trycatgpt-btn");
@@ -783,8 +780,7 @@ if (catgptBtn) {
   catgptBtn.addEventListener("click", async () => {
     try {
       const r = await fetch(`${CATGPT_COUNTER_URL}/up`, {
-        method: "GET",
-        headers: { "Authorization": `Bearer ${CATGPT_API_KEY}` }
+        method: "GET"
       });
       if (r.ok) {
         const data = await r.json();
